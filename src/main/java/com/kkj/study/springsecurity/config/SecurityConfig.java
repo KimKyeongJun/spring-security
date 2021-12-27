@@ -1,6 +1,7 @@
 package com.kkj.study.springsecurity.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,5 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic();       //HttpBasic 사용
         http.formLogin();
         http.httpBasic();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //원하는 유저 정보를 임의로 설정할 수 있는 메소드
+        auth.inMemoryAuthentication()
+                .withUser("kyeongjun").password("{noop}123").roles("USER").and()    //{noop}암호화를 하지 않는다
+                .withUser("admin").password("{noop}!@#").roles("ADMIN");
+
     }
 }
