@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,9 @@ public class AccountService implements UserDetailsService {
     //TODO {noop}123 패스워드 인코딩
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,7 +34,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account createNew(Account account) {
-        account.setPassword("{noop}" + account.getPassword());
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         return this.accountRepository.save(account);
     }
 }
