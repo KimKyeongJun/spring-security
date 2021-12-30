@@ -2,6 +2,8 @@ package com.kkj.study.springsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
+@Order(Ordered.LOWEST_PRECEDENCE -15)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //원칙적으로는 해줘야하는데 UserDetailsService를 구현한 구현체가 Bean으로 등록되어 있으면 안해줘도 상관없다(AccountService)
