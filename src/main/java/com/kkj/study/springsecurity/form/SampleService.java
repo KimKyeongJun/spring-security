@@ -2,12 +2,9 @@ package com.kkj.study.springsecurity.form;
 
 import com.kkj.study.springsecurity.account.Account;
 import com.kkj.study.springsecurity.account.AccountContext;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.kkj.study.springsecurity.common.SecurityLogger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 @Service
 public class SampleService {
@@ -27,4 +24,9 @@ public class SampleService {
 
     }
 
+    @Async
+    public void asyncService() {
+        SecurityLogger.log("Async Service");
+        System.out.println("Async service is called");
+    }
 }

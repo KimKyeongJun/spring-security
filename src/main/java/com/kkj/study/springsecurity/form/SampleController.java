@@ -4,7 +4,6 @@ import com.kkj.study.springsecurity.account.AccountContext;
 import com.kkj.study.springsecurity.account.AccountRepository;
 import com.kkj.study.springsecurity.common.SecurityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,5 +66,14 @@ public class SampleController {
             SecurityLogger.log("Callable");
             return "Async Handler";
         };
+    }
+
+    @GetMapping("/async-service")
+    @ResponseBody
+    public String asyncService() {
+        SecurityLogger.log("MVC, before async service");
+        sampleService.asyncService();
+        SecurityLogger.log("MVC, after async service");
+        return "Async Service";
     }
 }
