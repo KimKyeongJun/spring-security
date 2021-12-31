@@ -1,6 +1,7 @@
 package com.kkj.study.springsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -11,6 +12,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -86,4 +88,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(accountService);
 //    }
+
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //web.ignoring().mvcMatchers("/favicon.ico");
+        // 일반적인 위치에 있는 정적 리소스들은 시큐리티 필터 적용 제외
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
 }
