@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -12,9 +13,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,9 +76,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic();       //HttpBasic 사용
         http.formLogin().loginPage("/login").permitAll();
         http.httpBasic();
+
+        http.logout().logoutSuccessUrl("/");
         
         // 익명 인증 Authentication 객체 설정
         http.anonymous().principal("anonymous");
+
+        //TODO ExceptionTranslatorFilter -> FilterSecurityInterceptor (AccessDecisionManager, AffirmativeBased)
+        //TODO AuthenticationException -> AuthenticationEntryPoint(Login 페이지로 보내주는 역할)
+        //TODO AccessDeniedException -> AccessDeniedHandler(403 Error Message) - Customizing
+        //http.exceptionHandling().accessDeniedPage("/access-denied"); // 페이지 이동
+        http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = principal.getUsername();
+            System.out.println(username + " is denied to access " + request.getRequestURI());
+            response.sendRedirect("/access-denied");
+        });
+
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
