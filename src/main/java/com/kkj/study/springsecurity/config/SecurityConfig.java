@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .formLogin()        //Form Login 사용
 //                .and()
 //                .httpBasic();       //HttpBasic 사용
-        http.formLogin();
+        http.formLogin().loginPage("/login").permitAll();
         http.httpBasic();
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
