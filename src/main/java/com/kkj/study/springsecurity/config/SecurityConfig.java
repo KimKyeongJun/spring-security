@@ -69,6 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic();       //HttpBasic 사용
         http.formLogin().loginPage("/login").permitAll();
         http.httpBasic();
+        
+        // 익명 인증 Authentication 객체 설정
+        http.anonymous().principal("anonymous");
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
