@@ -4,6 +4,7 @@ import com.kkj.study.springsecurity.account.Account;
 import com.kkj.study.springsecurity.account.AccountContext;
 import com.kkj.study.springsecurity.account.AccountRepository;
 import com.kkj.study.springsecurity.account.UserAccount;
+import com.kkj.study.springsecurity.book.BookRepository;
 import com.kkj.study.springsecurity.common.CurrentUser;
 import com.kkj.study.springsecurity.common.SecurityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class SampleController {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
 
     @GetMapping("/")
@@ -59,6 +63,7 @@ public class SampleController {
     @GetMapping("/user")
     public String user(Model model, Principal principal) {
         model.addAttribute("message", "Hello Admin, " + principal.getName());
+        model.addAttribute("books", bookRepository.findCurrentUserBooks());
         return "user";
     }
 
