@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new LogginFilter(), WebAsyncManagerIntegrationFilter.class);
+        //http.addFilterBefore(new LogginFilter(), WebAsyncManagerIntegrationFilter.class);
 
         //특정 url은 인증을 거치고 싶지 않다
         http.authorizeRequests()
@@ -88,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutSuccessUrl("/");
         
         // 익명 인증 Authentication 객체 설정
-        http.anonymous().principal("anonymous");
+       // http.anonymous().principal("anonymous");
 
         //TODO ExceptionTranslatorFilter -> FilterSecurityInterceptor (AccessDecisionManager, AffirmativeBased)
         //TODO AuthenticationException -> AuthenticationEntryPoint(Login 페이지로 보내주는 역할)
